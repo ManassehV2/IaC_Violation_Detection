@@ -135,14 +135,6 @@ python train_iac.py \
     --stride 256
 ```
 
-#### **Cross-Validation**
-```bash
-python train_iac.py \
-    --task cross_validate \
-    --cv_folds 5 \
-    --train_csv dataset/aws_train.csv
-```
-
 #### **Testing Only**
 ```bash
 python train_iac.py \
@@ -187,7 +179,7 @@ python train_iac.py --disable_early_stopping
 |-----------|------|---------|-------------|
 | `--backbone` | str | `microsoft/graphcodebert-base` | Pre-trained model architecture |
 | `--mode` | str | `full` | Training mode: `full`, `no_sliding_windows`, `no_attention` |
-| `--task` | str | `train` | Task: `train`, `test`, `cross_validate`, `train_and_test` |
+| `--task` | str | `train` | Task: `train`, `test`, `train_and_test` |
 | `--train_csv` | str | - | Path to training dataset CSV |
 | `--val_csv` | str | - | Path to validation dataset CSV |
 | `--test_csv` | str | `None` | Path to test dataset CSV |
@@ -198,7 +190,6 @@ python train_iac.py --disable_early_stopping
 | `--window_size` | int | `384` | Token window size for sliding windows |
 | `--stride` | int | `192` | Stride for sliding windows |
 | `--max_windows` | int | `6` | Maximum number of windows per sample |
-| `--cv_folds` | int | `5` | Number of cross-validation folds |
 | `--load_checkpoint` | str | `None` | Path to checkpoint for resuming/testing |
 | `--early_stopping_patience` | int | `2` | Early stopping patience |
 | `--early_stopping_delta` | float | `0.005` | Minimum improvement for early stopping |
