@@ -115,6 +115,7 @@ QUALITY_FILTERS = [
     "stars:>=2",          # At least 1 star
     "size:>=10",          # At least 10KB
     "pushed:>2018-01-01", # Updated since 2019
+    "fork:false",
 ]
 
 PER_PAGE = 100
