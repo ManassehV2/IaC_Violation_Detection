@@ -81,18 +81,137 @@ IaC_Violation_Detection/
 
 ## 🚂 Training
 
-Run the main training script:
+### Basic Usage
+
+Run the main training script with default settings:
 
 ```bash
 python train_iac.py
 ```
 
-The training script supports various configuration options and will automatically:
+### CLI Examples
+
+The training script supports extensive command-line configuration. Here are common usage patterns:
+
+#### **Basic Training with Custom Datasets**
+```bash
+python train_iac.py \
+    --train_csv dataset/aws_train.csv \
+    --val_csv dataset/aws_eval.csv \
+    --output_dir ./my_results
+```
+
+#### **Model Architecture Selection**
+```bash
+# Use GraphCodeBERT (default)
+python train_iac.py --backbone microsoft/graphcodebert-base
+
+# Use CodeBERT
+python train_iac.py --backbone microsoft/codebert-base
+
+# Use DistilBERT (faster, smaller)
+python train_iac.py --backbone distilbert-base-uncased
+```
+
+#### **Training Mode Options**
+```bash
+# Full sliding window with attention (default)
+python train_iac.py --mode full
+
+# No sliding windows (faster training)
+python train_iac.py --mode no_sliding_windows
+
+# Sliding windows without attention mechanism
+python train_iac.py --mode no_attention
+```
+
+#### **Hyperparameter Tuning**
+```bash
+python train_iac.py \
+    --learning_rate 5e-5 \
+    --batch_size 8 \
+    --epochs 15 \
+    --window_size 512 \
+    --stride 256
+```
+
+#### **Cross-Validation**
+```bash
+python train_iac.py \
+    --task cross_validate \
+    --cv_folds 5 \
+    --train_csv dataset/aws_train.csv
+```
+
+#### **Testing Only**
+```bash
+python train_iac.py \
+    --task test \
+    --test_csv dataset/aws_gold.csv \
+    --load_checkpoint ./results/best_model
+```
+
+#### **Complete Training Pipeline**
+```bash
+python train_iac.py \
+    --task train_and_test \
+    --train_csv dataset/aws_train.csv \
+    --val_csv dataset/aws_eval.csv \
+    --test_csv dataset/aws_gold.csv \
+    --backbone microsoft/graphcodebert-base \
+    --mode full \
+    --learning_rate 2e-5 \
+    --batch_size 4 \
+    --epochs 10 \
+    --window_size 384 \
+    --stride 192 \
+    --max_windows 6 \
+    --output_dir ./results \
+    --seed 42
+```
+
+#### **Early Stopping Configuration**
+```bash
+python train_iac.py \
+    --early_stopping_patience 3 \
+    --early_stopping_delta 0.01 \
+    --early_stopping_metric eval_f1_macro
+
+# Disable early stopping
+python train_iac.py --disable_early_stopping
+```
+
+### CLI Parameters Reference
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `--backbone` | str | `microsoft/graphcodebert-base` | Pre-trained model architecture |
+| `--mode` | str | `full` | Training mode: `full`, `no_sliding_windows`, `no_attention` |
+| `--task` | str | `train` | Task: `train`, `test`, `cross_validate`, `train_and_test` |
+| `--train_csv` | str | - | Path to training dataset CSV |
+| `--val_csv` | str | - | Path to validation dataset CSV |
+| `--test_csv` | str | `None` | Path to test dataset CSV |
+| `--output_dir` | str | `./results` | Output directory for results |
+| `--learning_rate` | float | `2e-5` | Learning rate for optimizer |
+| `--batch_size` | int | `4` | Training batch size |
+| `--epochs` | int | `10` | Number of training epochs |
+| `--window_size` | int | `384` | Token window size for sliding windows |
+| `--stride` | int | `192` | Stride for sliding windows |
+| `--max_windows` | int | `6` | Maximum number of windows per sample |
+| `--cv_folds` | int | `5` | Number of cross-validation folds |
+| `--load_checkpoint` | str | `None` | Path to checkpoint for resuming/testing |
+| `--early_stopping_patience` | int | `2` | Early stopping patience |
+| `--early_stopping_delta` | float | `0.005` | Minimum improvement for early stopping |
+| `--early_stopping_metric` | str | `eval_f1_micro` | Metric for early stopping |
+| `--disable_early_stopping` | flag | `False` | Disable early stopping |
+| `--seed` | int | `42` | Random seed for reproducibility |
+
+The training script will automatically:
 - Load and preprocess the datasets
 - Initialize the specified model architecture
 - Execute the training loop with proper validation
 - Save model checkpoints and training metrics
-- Generate evaluation reports
+- Generate evaluation reports and visualizations
 
 ## 📈 Model Architecture
 
