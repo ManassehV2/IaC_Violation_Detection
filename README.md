@@ -248,12 +248,6 @@ The project includes comprehensive evaluation tools:
 
 This project is part of academic research. Please cite appropriately if used in academic work.
 
-## 🙏 Acknowledgments
-
-- Dataset sources and cloud security research community
-- Open source transformer model implementations
-- AWS security best practices documentation
-
 ## 📞 Contact
 
 For questions about this research project, please open an issue in the repository.
